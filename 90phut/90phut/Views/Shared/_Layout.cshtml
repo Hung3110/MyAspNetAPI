@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Kt90phut</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_90phut.styles.css" asp-append-version="true" />
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #ffffff; /* Nền trắng */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #003366; /* Xanh lam đậm */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            padding: 10px 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-size: 1.1rem;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #ffcc00 !important;
+                text-decoration: underline;
+            }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-toggler-icon {
+            background-color: white;
+        }
+
+        /* Updated container for better layout */
+        .container {
+            max-width: 1140px; /* Giới hạn chiều rộng */
+            margin-top: 30px;
+            padding-bottom: 50px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            background-color: #003366;
+            color: #bdc3c7;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+            .footer a {
+                color: #ffcc00;
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+                .footer a:hover {
+                    color: #ffffff;
+                }
+
+        .btn-custom {
+            background-color: #003366;
+            color: white;
+            border-radius: 5px;
+            font-size: 1rem;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #002244;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            }
+
+        .card {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .card-header {
+            background-color: #003366;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-body {
+            background-color: white;
+            padding: 20px;
+        }
+
+        /* Flexbox for main content */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar-collapse {
+            justify-content: space-between; /* Điều chỉnh thanh điều hướng */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kt90phut</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            &copy; 2025 - Kt90phut - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

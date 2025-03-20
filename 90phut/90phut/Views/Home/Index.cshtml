@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Danh sách";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Danh sách Hàng Hóa</h1>
+
+    <!-- Form thêm mới hàng hóa -->
+    <div class="mb-3">
+        <input type="text" id="maHangHoa" class="form-control mb-2" placeholder="Mã hàng hóa (9 ký tự)">
+        <input type="text" id="tenHangHoa" class="form-control mb-2" placeholder="Tên hàng hóa">
+        <input type="number" id="soLuong" class="form-control mb-2" placeholder="Số lượng">
+        <input type="text" id="ghiChu" class="form-control mb-2" placeholder="Ghi chú">
+        <button class="btn btn-primary" onclick="addGoods()">Thêm hàng hóa</button>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Mã Hàng Hóa</th>
+                <th>Tên Hàng Hóa</th>
+                <th>Số Lượng</th>
+                <th>Ghi Chú</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="goodsTable">
+            <!-- Dữ liệu từ API sẽ được đẩy vào đây -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", loadGoods);
+
+    function loadGoods() {
+        fetch("/api/hanghoa")
+            .then(response => response.json())
+            .then(data => {
+                let table = document.getElementById("goodsTable");
+                table.innerHTML = "";
+                data.forEach(item => {
+                    let row = `<tr id="row-${item.maHangHoa}">
+                                <td>${item.maHangHoa}</td>
+                                <td><input type="text" value="${item.tenHangHoa}" id="name-${item.maHangHoa}" class="form-control"></td>
+                                <td><input type="number" value="${item.soLuong}" id="qty-${item.maHangHoa}" class="form-control"></td>
+                                <td><input type="text" value="${item.ghiChu || ''}" id="note-${item.maHangHoa}" class="form-control"></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" onclick="updateGoods('${item.maHangHoa}')">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteGoods('${item.maHangHoa}')">Xóa</button>
+                                </td>
+                            </tr>`;
+                    table.innerHTML += row;
+                });
+            })
+            .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
+    }
+
+    function addGoods() {
+        const maHangHoa = document.getElementById("maHangHoa").value;
+        const tenHangHoa = document.getElementById("tenHangHoa").value;
+        const soLuong = document.getElementById("soLuong").value;
+        const ghiChu = document.getElementById("ghiChu").value;
+
+        if (!maHangHoa || !tenHangHoa) {
+            alert("Mã hàng hóa và tên hàng hóa không được để trống!");
+            return;
+        }
+
+        fetch("/api/hanghoa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ maHangHoa, tenHangHoa, soLuong, ghiChu })
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadGoods();
+                    alert("Thêm hàng hóa thành công!");
+                } else {
+                    alert("Lỗi khi thêm hàng hóa!");
+                }
+            })
+            .catch(error => console.error("Lỗi khi thêm dữ liệu:", error));
+    }
+
+    function updateGoods(id) {
+        const tenHangHoa = document.getElementById(`name-${id}`).value;
+        const soLuong = document.getElementById(`qty-${id}`).value;
+        const ghiChu = document.getElementById(`note-${id}`).value;
+
+        fetch(`/api/hanghoa/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ maHangHoa: id, tenHangHoa, soLuong, ghiChu })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Cập nhật thành công!");
+                } else {
+                    alert("Lỗi khi cập nhật hàng hóa!");
+                }
+            })
+            .catch(error => console.error("Lỗi khi cập nhật dữ liệu:", error));
+    }
+
+    function deleteGoods(id) {
+        if (!confirm("Bạn có chắc muốn xóa?")) return;
+
+        fetch(`/api/hanghoa/${id}`, {
+            method: "DELETE"
+        })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById(`row-${id}`).remove();
+                    alert("Xóa thành công!");
+                } else {
+                    alert("Lỗi khi xóa hàng hóa!");
+                }
+            })
+            .catch(error => console.error("Lỗi khi xóa dữ liệu:", error));
+    }
+</script>
