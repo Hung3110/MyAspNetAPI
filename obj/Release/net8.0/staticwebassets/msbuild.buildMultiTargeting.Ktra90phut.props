@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Ktra90phut.props" />
+</Project>
